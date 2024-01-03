@@ -13,3 +13,14 @@ plt.ylabel("Spannung in mV")
 plt.xlabel("Zeit in ms")
 plt.plot(1000*s,1000*U)
 plt.show()
+
+Ge = pd.read_csv("TR02.CSV")
+s = Ge["[s]"]
+U = Ge["CH2[V]"]
+
+plt.grid()
+#plt.legend(loc = "upper right" , fancybox = True , frameon = True , edgecolor = "black")
+plt.ylabel("Spannung in V")
+plt.xlabel("Zeit in ms")
+plt.plot(1000*s,U)
+plt.show()
