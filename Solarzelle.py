@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
+#Funktion Auswertung ist für Rot, Grün, Tageslicht, die andern lassen sich nicht fitten
+
 def Auswertung(Pfad, Pfad2):
+    a = 25
+    b = 7
     data = pd.read_csv(Pfad, sep=",")
     data2 = pd.read_csv(Pfad2, sep=",")
     xdata = np.array(data[" U in V (mess)"])
@@ -18,22 +22,22 @@ def Auswertung(Pfad, Pfad2):
         if ydatazip[i] < 0:
             x = i
     print(x)
-    xlist = np.linspace(min(xdatazip[25:x + 7]), max(xdatazip[25:x + 7]), 1000)
-    popt, pcov = curve_fit(lambda x, a, b, c: a * (np.exp(x / b) - 1) - c, xdatazip[25:x + 7], ydatazip[25:x + 7])
+    xlist = np.linspace(min(xdatazip[a:x + b]), max(xdatazip[a:x + b]), 1000)
+    popt, pcov = curve_fit(lambda x, a, b, c: a * (np.exp(x / b) - 1) - c, xdatazip[a:x + b], ydatazip[a:x + b])
     y = popt[0] * (np.e ** (xlist / popt[1]) - 1) - popt[2]
     plt.plot(xlist, y, color="red")
-    plt.scatter(xdatazip[25:x + 7], ydatazip[25:x + 7])
+    plt.scatter(xdatazip[a:x + b], ydatazip[a:x + b])
     print(popt)
-    ifoto = ydatazip[30]
+    ifoto = abs(ydatazip[30])
     for i in range(len(y)):
         if y[i] < 0:
             d = i
     for i in range(len(y)):
         if xlist[i] < 0:
             e = i
-    uleer = xlist[d]
+    uleer = abs(xlist[d])
     arr = xlist[e+1:d]*y[e+1:d]
-    pmax = min(arr)
+    pmax = abs(min(arr))
     sf = 1.12
     ff = pmax/(ifoto*uleer)
     cf = sf * ff
@@ -44,8 +48,8 @@ def Auswertung(Pfad, Pfad2):
     print("Füllfaktor: ", ff)
     print("cFaktor: ", cf)
     plt.show()
+Auswertung("Tageslicht_Durchlassrichtung.txt","Tageslicht_Sperrrichtung.txt")
 
-Auswertung("Grün_525nm_Durchlassrichtung.txt","Grün_525nm_Sperrrichtung.txt")
 
 def Plotter(Pfad, Pfad2, Label, Marker):
     data = pd.read_csv(Pfad, sep=",")
