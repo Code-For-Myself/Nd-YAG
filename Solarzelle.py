@@ -1,9 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import curve_fit
-import uncertainties
-from uncertainties import ufloat
+
 def Plotter(Pfad, Pfad2, Label, Marker, Color):
     data = pd.read_csv(Pfad, sep=",")
     data2 = pd.read_csv(Pfad2, sep=",")
